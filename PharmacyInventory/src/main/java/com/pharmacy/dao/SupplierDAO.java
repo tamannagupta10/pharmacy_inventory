@@ -1,0 +1,142 @@
+package com.pharmacy.dao;
+
+import com.pharmacy.db.DBConnection;
+import com.pharmacy.model.Supplier;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * SupplierDAO.java - Database operations for Supplier
+ * Day 4 ka full CRUD version (Day 3 mein sirf getAllSuppliers tha)
+ */
+public class SupplierDAO {
+
+    /** Dropdown ke liye - sirf id aur naam (Day 3 se) */
+    public List<Supplier> getAllSuppliers() {
+        List<Supplier> list = new ArrayList<>();
+        String sql = "SELECT * FROM suppliers ORDER BY supplier_name";
+
+        try {
+            Connection conn = DBConnection.getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+
+            while (rs.next()) {
+                list.add(mapRowToSupplier(rs));
+            }
+
+            rs.close();
+            stmt.close();
+        } catch (SQLException e) {
+            System.err.println("[SupplierDAO] getAllSuppliers error: " + e.getMessage());
+        }
+
+        return list;
+    }
+
+    /** ID se ek supplier laata hai (edit form ke liye) */
+    public Supplier getSupplierById(int id) {
+        Supplier supplier = null;
+        String sql = "SELECT * FROM suppliers WHERE supplier_id = ?";
+
+        try {
+            Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                supplier = mapRowToSupplier(rs);
+            }
+
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.err.println("[SupplierDAO] getSupplierById error: " + e.getMessage());
+        }
+
+        return supplier;
+    }
+
+    /** Naya supplier add karta hai */
+    public boolean addSupplier(Supplier s) {
+        String sql = "INSERT INTO suppliers (supplier_name, contact_name, phone, email, address) " +
+                     "VALUES (?, ?, ?, ?, ?)";
+
+        try {
+            Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, s.getSupplierName());
+            ps.setString(2, s.getContactName());
+            ps.setString(3, s.getPhone());
+            ps.setString(4, s.getEmail());
+            ps.setString(5, s.getAddress());
+
+            int rows = ps.executeUpdate();
+            ps.close();
+            return rows > 0;
+
+        } catch (SQLException e) {
+            System.err.println("[SupplierDAO] addSupplier error: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /** Existing supplier update karta hai */
+    public boolean updateSupplier(Supplier s) {
+        String sql = "UPDATE suppliers SET supplier_name=?, contact_name=?, phone=?, email=?, address=? " +
+                     "WHERE supplier_id=?";
+
+        try {
+            Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, s.getSupplierName());
+            ps.setString(2, s.getContactName());
+            ps.setString(3, s.getPhone());
+            ps.setString(4, s.getEmail());
+            ps.setString(5, s.getAddress());
+            ps.setInt(6, s.getSupplierId());
+
+            int rows = ps.executeUpdate();
+            ps.close();
+            return rows > 0;
+
+        } catch (SQLException e) {
+            System.err.println("[SupplierDAO] updateSupplier error: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /** Supplier delete karta hai */
+    public boolean deleteSupplier(int id) {
+        String sql = "DELETE FROM suppliers WHERE supplier_id = ?";
+
+        try {
+            Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+
+            int rows = ps.executeUpdate();
+            ps.close();
+            return rows > 0;
+
+        } catch (SQLException e) {
+            System.err.println("[SupplierDAO] deleteSupplier error: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /** Helper - ResultSet row ko Supplier object mein convert karta hai */
+    private Supplier mapRowToSupplier(ResultSet rs) throws SQLException {
+        Supplier s = new Supplier();
+        s.setSupplierId(rs.getInt("supplier_id"));
+        s.setSupplierName(rs.getString("supplier_name"));
+        s.setContactName(rs.getString("contact_name"));
+        s.setPhone(rs.getString("phone"));
+        s.setEmail(rs.getString("email"));
+        s.setAddress(rs.getString("address"));
+        return s;
+    }
+}

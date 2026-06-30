@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login — Pharmacy Inventory</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a365d 0%, #2b6cb0 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .login-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 2.5rem 2rem;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo-icon { font-size: 50px; display: block; margin-bottom: 10px; }
+
+        .logo h1 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1a202c;
+        }
+
+        .logo p {
+            font-size: 13px;
+            color: #718096;
+            margin-top: 4px;
+        }
+
+        .error-box {
+            background: #fff5f5;
+            border: 1px solid #fed7d7;
+            color: #c53030;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 13px;
+            margin-bottom: 1.2rem;
+            display: none;
+            text-align: center;
+        }
+
+        .form-group { margin-bottom: 1.2rem; }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 6px;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #2d3748;
+            background: #f7fafc;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input:focus {
+            border-color: #4299e1;
+            box-shadow: 0 0 0 3px rgba(66,153,225,0.2);
+            background: #fff;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background: #2b6cb0;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            transition: background 0.2s;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-login:hover { background: #2c5282; }
+
+        .hint-box {
+            background: #ebf8ff;
+            border: 1px solid #bee3f8;
+            border-radius: 8px;
+            padding: 12px 14px;
+            font-size: 12px;
+            color: #2c5282;
+            margin-top: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .hint-box strong { display: block; margin-bottom: 4px; font-size: 13px; }
+    </style>
+</head>
+<body>
+
+<div class="login-card">
+
+    <div class="logo">
+        <span class="logo-icon">&#128138;</span>
+        <h1>Pharmacy Inventory</h1>
+        <p>Sign in to your Account</p>
+    </div>
+
+    <!-- Error box — JS se dikhega agar login galat hua -->
+    <div class="error-box" id="errorBox">
+        &#10060;Wrong Username or Password.Try Again</div>
+
+    <form action="login" method="post" onsubmit="return validateForm()">
+
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username"
+                   placeholder="Enter Username" required />
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password"
+                   placeholder="Enter Password" required />
+        </div>
+
+        <button type="submit" class="btn-login">&#128274; Login</button>
+
+    </form>
+
+    
+
+</div>
+
+<script>
+    // URL mein ?error=1 ho toh error box dikhao
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('error') === '1') {
+        document.getElementById('errorBox').style.display = 'block';
+    }
+
+    // Submit se pehle basic validation
+    function validateForm() {
+        const u = document.getElementById('username').value.trim();
+        const p = document.getElementById('password').value.trim();
+        if (u === '' || p === '') {
+            alert('Username and Password is compulsory');
+            return false;
+        }
+        return true;
+    }
+</script>
+
+</body>
+</html>
