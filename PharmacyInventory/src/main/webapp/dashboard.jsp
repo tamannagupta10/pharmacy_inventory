@@ -228,12 +228,11 @@
     <p>Manage Suppliers and Purchase Orders</p>
 </a>
 
-        <a href="#" class="module-card coming">
-            <span class="icon">&#128179;</span>
-            <h3>Sales & Billing</h3>
-            <p>Make bill and Check Sales History</p>
-            <div class="soon-tag"></div>
-        </a>
+        <a href="<%= request.getContextPath() %>/sales" class="module-card">
+    <span class="icon">&#128179;</span>
+    <h3>Sales & Billing</h3>
+    <p>Make Bill and Check Sales History</p>
+</a>
 
         <a href="#" class="module-card coming">
             <span class="icon">&#9888;</span>
