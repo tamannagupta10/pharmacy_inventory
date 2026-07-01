@@ -36,7 +36,7 @@ public class LoginServlet extends HttpServlet {
             session.setMaxInactiveInterval(30 * 60); // 30 min
 
             // Step 4 - Dashboard pe redirect karo
-            response.sendRedirect(request.getContextPath() + "/dashboard.jsp");
+            response.sendRedirect(request.getContextPath() + "/dashboard");
 
         } else {
             // Step 5 - Login galat: wapas login pe error ke saath

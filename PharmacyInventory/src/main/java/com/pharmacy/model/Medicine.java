@@ -4,24 +4,25 @@ import java.math.BigDecimal;
 import java.sql.Date;
 
 /**
- * Medicine.java - Model Class
- * Ek object = medicines table ki ek row
+ * Medicine.java - Updated for Day 6
+ * daysLeft field add kiya — expiry alerts ke liye
  */
 public class Medicine {
 
     private int        medicineId;
     private String     medicineName;
     private String     brandName;
-    private int         categoryId;
-    private String      categoryName;   // join se aayega, display ke liye
-    private int         supplierId;
-    private String      supplierName;   // join se aayega, display ke liye
-    private int         quantity;
-    private int         minStock;
-    private BigDecimal  unitPrice;
-    private Date        expiryDate;
-    private Date        manufactureDate;
-    private String      description;
+    private int        categoryId;
+    private String     categoryName;
+    private int        supplierId;
+    private String     supplierName;
+    private int        quantity;
+    private int        minStock;
+    private BigDecimal unitPrice;
+    private Date       expiryDate;
+    private Date       manufactureDate;
+    private String     description;
+    private int        daysLeft;   // NEW - kitne din mein expire hogi (Day 6 ke liye)
 
     public Medicine() {}
 
@@ -36,9 +37,10 @@ public class Medicine {
     public int        getQuantity()        { return quantity; }
     public int        getMinStock()        { return minStock; }
     public BigDecimal getUnitPrice()       { return unitPrice; }
-    public Date        getExpiryDate()      { return expiryDate; }
-    public Date        getManufactureDate() { return manufactureDate; }
-    public String      getDescription()     { return description; }
+    public Date       getExpiryDate()      { return expiryDate; }
+    public Date       getManufactureDate() { return manufactureDate; }
+    public String     getDescription()     { return description; }
+    public int        getDaysLeft()        { return daysLeft; }   // NEW
 
     // Setters
     public void setMedicineId(int medicineId)            { this.medicineId = medicineId; }
@@ -54,9 +56,10 @@ public class Medicine {
     public void setExpiryDate(Date expiryDate)           { this.expiryDate = expiryDate; }
     public void setManufactureDate(Date manufactureDate) { this.manufactureDate = manufactureDate; }
     public void setDescription(String description)       { this.description = description; }
+    public void setDaysLeft(int daysLeft)                { this.daysLeft = daysLeft; }   // NEW
 
-    /** Helper - low stock hai ya nahi check karne ke liye (Day 6 mein use hoga) */
+    /** Low stock check helper */
     public boolean isLowStock() {
-        return quantity < minStock;
+        return quantity > 0 && quantity < minStock;
     }
 }
